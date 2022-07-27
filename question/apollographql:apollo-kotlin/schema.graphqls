@@ -1,0 +1,91 @@
+type Query {
+  leetbookUgcQuestionList("筛选参数" filters: QuestionListFilterInput, skip: Int = 0, limit: Int = 5): LeetbookUcgQuestionListNode!
+
+  problemsetQuestionList("若不传则代表全部" categorySlug: String, "筛选参数" filters: QuestionListFilterInput = {
+    sort_order: 0
+  }
+  , skip: Int = 0, limit: Int = 5): QuestionListNode!
+
+  problemsetRandomFilteredQuestion("若不传则代表全部" categorySlug: String, "筛选参数" filters: QuestionListFilterInput = {
+    sort_order: 0
+  }
+  ): String!
+
+  problemsetCompanyQuestionList("若不传则代表全部" categorySlug: String, "筛选参数" filters: QuestionListFilterInput = {
+    sort_order: 0
+  }
+  , skip: Int = 0, limit: Int = 5): QuestionListNode!
+}
+
+type LeetbookUcgQuestionListNode {
+  questions: [LeetbookUcgQuestionNode!]!
+
+  hasMore: Boolean!
+
+  total: Int!
+}
+
+type LeetbookUcgQuestionNode {
+  isNewQuestion: Boolean!
+
+  title: String!
+
+  titleCn: String!
+}
+
+type QuestionListNode {
+  questions: [QuestionLightNode!]!
+
+  hasMore: Boolean!
+
+  total: Int!
+}
+
+type QuestionLightNode {
+  title: String!
+
+  titleCn: String!
+
+  acRate: Float
+
+  solutionNum: Int!
+}
+
+input QuestionListFilterInput {
+  orderBy: QuestionOrderByEnum
+
+  sortOrder: SortingOrderEnum = 0
+
+  difficulty: DifficultyEnum
+}
+
+enum SortingOrderEnum {
+  ASCENDING
+
+  DESCENDING
+}
+
+enum QuestionOrderByEnum {
+  FRONTEND_ID
+
+  SOLUTION_NUM
+
+  AC_RATE
+
+  FREQUENCY
+
+  DIFFICULTY
+}
+
+enum DifficultyEnum {
+  EASY
+
+  MEDIUM
+
+  HARD
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
